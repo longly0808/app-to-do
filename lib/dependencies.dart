@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:to_do_list/bloc/bloc_dependencies.dart';
 import 'package:to_do_list/service/service.dart';
 
 
@@ -8,5 +9,7 @@ class AppDependencies{
 
   static Future initialize()  async{
     ServiceDependencies.init(injector);
+    BlocDependencies.init(injector);
+
   }
 }

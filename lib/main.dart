@@ -1,7 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:to_do_list/page/auth/login_page.dart';
-import 'package:to_do_list/style/colors.dart';
+import 'package:to_do_list/page/screen/home_screen.dart';
 import 'package:to_do_list/style/my_theme.dart';
 
 import 'dependencies.dart';
@@ -28,9 +27,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: tr('to_do_list'),
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -46,6 +42,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  bool? taske;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    // getStatusLogin();
+  }
+
+  // Future<void> getStatusLogin()async {
+  //   final sharedPreferences =AppDependencies.injector.get<UserPreferences>();
+  //   taske =await sharedPreferences.getStatusLogin();
+  //   getStatusLogin();
+  //   print(taske);
+  // }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -57,7 +68,8 @@ class _MyHomePageState extends State<MyHomePage> {
       debugShowCheckedModeBanner: false,
       home: const Scaffold(
         body: SafeArea(
-          child: LoginPage(),
+          child:HomeScreen()
+          // , LoginPage(),
         ),
       ),
     );

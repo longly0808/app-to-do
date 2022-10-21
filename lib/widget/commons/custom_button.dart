@@ -9,6 +9,7 @@ class CustomButton extends StatefulWidget {
     this.width,
     this.colors,
     this.borderRadius,
+    this.textColors,
     required this.onclick,
     this.text,
   }) : super(key: key);
@@ -18,6 +19,7 @@ class CustomButton extends StatefulWidget {
   final Color? colors;
   final VoidCallback onclick;
   final String? text;
+  final Color? textColors;
 
   @override
   State<StatefulWidget> createState() => _CustomButtonState();
@@ -47,7 +49,7 @@ class _CustomButtonState extends State<CustomButton> {
           alignment: Alignment.center,
           child: Text(
             widget.text ?? tr('button'),
-            style: theme.textTheme.button,
+            style:theme.textTheme.button!.copyWith(color:widget.textColors ?? theme.colorScheme.primary),
           ),
         ),
       ),

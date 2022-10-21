@@ -5,5 +5,9 @@
   "login": "Login",
   "text_signup": "Don't have an account?",
   "signup": "Sign up",
+  "forgot_password":"forgot password?",
+  "input_user_name": "Email",
+  "your_password": "Password",
+  "invalid_login": "email or password is invalid!",
   "end_json": "end_json thêm resource phía trên dòng này."
 }

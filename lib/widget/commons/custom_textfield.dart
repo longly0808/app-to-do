@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 
 import '../../style/style.dart';
 
 class CustomTextField extends StatefulWidget {
-  const CustomTextField({Key? key, this.isTypePassword = true, this.hintText})
+  const CustomTextField({Key? key, this.isTypePassword = true, this.hintText, this.onChange})
       : super(key: key);
   final bool? isTypePassword;
   final String? hintText;
+  final ValueChanged<String>? onChange;
 
   @override
   State<CustomTextField> createState() => _CustomTextFieldState();
@@ -17,10 +17,13 @@ class _CustomTextFieldState extends State<CustomTextField> {
   bool _isShowPassword = true;
   bool _isHover = false;
 
+
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
     return TextField(
+      onChanged: widget.onChange,
       obscureText: widget.isTypePassword == true ? _isShowPassword : false,
       style: theme.textTheme.headline5,
       decoration: InputDecoration(
@@ -28,6 +31,7 @@ class _CustomTextFieldState extends State<CustomTextField> {
           borderRadius: BorderRadius.circular(
             Dimens.size12,
           ),
+          borderSide: const BorderSide(color: Colors.grey, width: 1)
         ),
         enabledBorder: OutlineInputBorder(
             borderSide: BorderSide(color: theme.colorScheme.primary)),

@@ -90,6 +90,7 @@ class MyTheme{
       backgroundColor: MyColors.darkColor,
         primaryColor: MyColors.darkCloudColor,
         scaffoldBackgroundColor: MyColors.darkColor,
+        primaryColorDark: MyColors.lightColor,
         colorScheme:  const ColorScheme(
           secondary: MyColors.darkAccentColor,
           primary: MyColors.darkCloudColor,
@@ -99,7 +100,7 @@ class MyTheme{
           onBackground: MyColors.whiteColor,
           onError: MyColors.errorColor,
           onPrimary: MyColors.darkAccentColor,
-          onSecondary: MyColors.darkColor,
+          onSecondary: MyColors.lightColor,
           onSurface: MyColors.darkColor,
           primaryContainer: MyColors.defaultColor,
           secondaryContainer: MyColors.darkCloudColor,
