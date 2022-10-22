@@ -1,27 +1,23 @@
 import 'package:easy_localization/easy_localization.dart';
-import 'package:to_do_list/config/config.dart';
-import 'package:to_do_list/core/bloc/base_cubit.dart';
-import 'package:to_do_list/core/bloc/base_state.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:to_do_list/bloc/bloc.dart';
 
+import '../../config/config.dart';
+import '../../core/bloc/base_state.dart';
 import '../../service/share_preferences/user_preferences.dart';
-import 'login_state.dart';
 
-class LoginBloc extends BaseCubit {
-  final UserPreferences _sharePreferences;
+import '../../core/bloc/base_cubit.dart';
 
-  LoginBloc(this._sharePreferences) : super(InitialState());
-
-  @override
-  void initState() {
-    super.initState();
-  }
+class LoginBloc extends BaseCubit{
+  final UserPreferences _userPreferences;
+  LoginBloc(this._userPreferences) : super(InitialState());
 
   Future<void> checkLogin(
       {required String email, required String password}) async {
     if (email == Config.email_default && password == Config.password_default) {
-      _sharePreferences.setStatusLogin(true);
-      Config.token = 'c4b9502135b216725419897ac58c79b68db1ec57';
-      emit(LoginSuccess());
+      SharedPreferences sharedPreferences =await _userPreferences.getInstance();
+      sharedPreferences.setBool(Config.statusLogin, true);
+      emit(LoginSuccess(token:'c4b9502135b216725419897ac58c79b68db1ec57' ));
       return;
     } else {
       emit(

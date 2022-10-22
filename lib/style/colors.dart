@@ -14,6 +14,8 @@ class MyColors {
   static const lightColor = Color.fromRGBO(254, 249, 230, 1.0);
   static const errorColor = Color.fromRGBO(255, 122, 104, 1);
   static const accentColor = Color.fromRGBO(41, 35, 63, 1.0);
+  static const greenColor = Color.fromRGBO(0, 255, 25, 0.5);
+
 
   ///dark theme
   static const darkColor = Color.fromRGBO(11, 19, 32, 1.0);

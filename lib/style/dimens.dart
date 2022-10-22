@@ -27,6 +27,7 @@ class Dimens {
   static const double textSize14 = 14.0;
   static const double textSize12 = 12.0;
 
+  static const double heigh150 = 150.0;
   static const double iconSizeInside = 20.0;
   static const double controlHeight = 44.0;
   static const double controlWidth = 180.0;

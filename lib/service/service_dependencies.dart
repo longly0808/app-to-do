@@ -7,6 +7,6 @@ class ServiceDependencies {
   static void init(GetIt injector){
     injector.registerLazySingleton<AuthService>(()=> AuthService());
     injector.registerFactory<Dio>(() => Dio());
-    injector.registerFactory<UserPreferences>(() => UserPreferences());
+    injector.registerLazySingleton<UserPreferences>(() => UserPreferences());
   }
 }

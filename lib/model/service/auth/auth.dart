@@ -14,5 +14,4 @@ class Auth {
   bool? isTeamInbox;
   String? viewStyle;
   String? url;
-
 }

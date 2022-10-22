@@ -10,6 +10,7 @@ class Constants{
   static const icon_pen ='assets/icons/pen.png';
   static const icon_clock = 'assets/icons/clock.png';
   static const design_logo = 'assets/images/design_logo.png';
+  static const profile_image ='assets/images/rafiki.png';
   static const redAsterisk = ' *';
 }
 class DataFormat {

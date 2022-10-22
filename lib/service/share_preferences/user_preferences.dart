@@ -2,26 +2,20 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class UserPreferences {
 
-  static String statusLogin = 'ISLOGIN';
-  late SharedPreferences? sharePreferences;
+
+  static SharedPreferences? _sharePreferences;
 
 
 
-  Future<void> getInstance() async {
-    sharePreferences = await SharedPreferences.getInstance();
+  Future<SharedPreferences> getInstance() async {
+    return _sharePreferences ??= await SharedPreferences.getInstance();
   }
 
-  Future<void> setStatusLogin(bool value) async {
-    if (sharePreferences == null) {
-      getInstance();
-    }
-    await sharePreferences?.setBool(statusLogin, value);
+  static Future<void> setValueTypeBool(String key,bool value) async {
+    await _sharePreferences?.setBool(key, value);
   }
 
-  Future<bool?> getStatusLogin() async {
-    if (sharePreferences == null) {
-      getInstance();
-    }
-    return await sharePreferences?.getBool(statusLogin);
+  static  Future<bool> getValue(String key) async {
+    return  _sharePreferences?.getBool(key)?? false;
   }
 }

@@ -1,12 +1,11 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:to_do_list/bloc/login/login_bloc.dart';
 import 'package:to_do_list/core/bloc/base_state.dart';
-import 'package:to_do_list/page/screen/home_screen.dart';
+import 'package:to_do_list/page/screen/list_task_screen.dart';
 import 'package:to_do_list/utility/utility.dart';
 import 'package:to_do_list/widget/base_cubit_stateful_widget.dart';
-import '../../bloc/login/login_state.dart';
+import '../../bloc/bloc.dart';
 import '../../config/config.dart';
 import '../../constant.dart';
 import '../../style/style.dart';
@@ -14,7 +13,8 @@ import '../../widget/commons/custom_button.dart';
 import '../../widget/commons/custom_textfield.dart';
 
 class LoginPage extends BaseCubitStatefulWidget {
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({Key? key,this.loginSuccess}) : super(key: key);
+  final Function(String)? loginSuccess;
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -147,12 +147,7 @@ class _LoginPageState
         },
         listener: (BuildContext context, state) {
           if (state is LoginSuccess) {
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const HomeScreen(),
-              ),(Route<dynamic> route) => false
-            );
+               Navigator.push(context, MaterialPageRoute(builder: (context)=>ListTaskScreen(token: state.token ?? '')));
           }
           if(state is LoadedState){
               ToastUtility.showError([state.errorMessage??'']);

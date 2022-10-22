@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:to_do_list/constant.dart';
@@ -50,14 +51,17 @@ class _TaskDetailState extends State<TaskDetail> {
               textInputAction: TextInputAction.newline,
               autovalidateMode: AutovalidateMode.onUserInteraction,
             ),
-            Visibility(visible: _isUpdate,child: Padding(
-              padding: const EdgeInsets.symmetric(vertical: Dimens.size4),
-              child: Divider(
-                color: theme.primaryColorDark,
-                endIndent: Dimens.size16,
-                indent: Dimens.size16,
+            Visibility(
+              visible: _isUpdate,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: Dimens.size4),
+                child: Divider(
+                  color: theme.primaryColorDark,
+                  endIndent: Dimens.size16,
+                  indent: Dimens.size16,
+                ),
               ),
-            ),),
+            ),
             BorderTextFieldInput(
               enabled: _isUpdate,
               colorEnableBorder: theme.primaryColorDark,
@@ -142,23 +146,45 @@ class _TaskDetailState extends State<TaskDetail> {
             color: theme.primaryColorDark,
           ),
           onTap: () {
-            showModalBottomSheet(
-                isScrollControlled : true,
-                context: context, builder: (context){
-              return Container(
-                color: Colors.transparent,
-                child: Column(
-                  children: [
-                    CustomButton(onclick: (){},text: 'delete',),
-                    SizedBox(height: Dimens.size16,),
-                    CustomButton(onclick: (){},text: 'cancel',),
-                  ],
-                ),
-              );
-            });
+          openModalBottomSheet(theme);
           },
         ),
       ],
     );
+  }
+
+  void openModalBottomSheet(ThemeData theme){
+    showModalBottomSheet(
+        barrierColor: Colors.black.withOpacity(0.5),
+        backgroundColor: Colors.transparent,
+        isScrollControlled: true,
+        context: context,
+        builder: (context) {
+          return Container(
+            color: Colors.transparent,
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal:  Dimens.size16),
+                  child: CustomButton(
+                    onclick: () {},
+                    text: tr('delete_button'),
+                    colors: theme.colorScheme.onSecondary,
+                    textColors: theme.colorScheme.error,
+                  ),
+                ),
+                Padding(padding: const EdgeInsets.symmetric(horizontal: Dimens.size16,vertical: Dimens.size16),
+                  child: CustomButton(
+                      onclick: () {
+                        Navigator.pop(context);
+                      },
+                      text: tr('cancel_button'),
+                      colors: theme.colorScheme.onSecondary,
+                      textColors: MyColors.greenColor),),
+              ],
+            ),
+          );
+        });
   }
 }
