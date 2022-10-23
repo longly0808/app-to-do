@@ -31,31 +31,25 @@ class _HomeScreenState
 
   @override
   Widget buildBody(BuildContext context) {
-    return BlocProvider(
-      create: (context) => bloc,
-      child: BlocConsumer<AuthenticationBloc, BaseState>(
-        listener: (BuildContext context, state) {
-          // if (state is AuthFailure) {
-          //   Navigator.push(context,
-          //           MaterialPageRoute(builder: (context) => LoginPage()))
-          //       .then((value) {
-          //     if (value == true) {
-          //       bloc.checkDisplayingScreen();
-          //     }
-          //   });
-          // }
-        },
-        builder: (BuildContext context, Object? state) {
-          if(state is AuthFailure){
-            return const LoginPage();
-          }
-          if (state is LoadedState) {
+    return Scaffold(
+      body: BlocProvider(
+        create: (context) => bloc,
+        child: BlocConsumer<AuthenticationBloc, BaseState>(
+          listener: (BuildContext context, state) {
 
-            return const ListTaskScreen(token:'c4b9502135b216725419897ac58c79b68db1ec57' ,);
-          } else {
-            return Container();
-          }
-        },
+          },
+          builder: (BuildContext context, Object? state) {
+            if(state is AuthFailure){
+              return const LoginPage();
+            }
+            if (state is LoadedState) {
+
+              return const ListTaskScreen(token:'c4b9502135b216725419897ac58c79b68db1ec57' ,);
+            } else {
+              return Container();
+            }
+          },
+        ),
       ),
     );
   }

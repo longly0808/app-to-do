@@ -1,59 +1,26 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:to_do_list/bloc/bloc.dart';
 
 import 'package:to_do_list/constant.dart';
+import 'package:to_do_list/core/bloc/base_state.dart';
 import 'package:to_do_list/page/screen/task_detail.dart';
 import 'package:to_do_list/style/style.dart';
 import 'package:to_do_list/widget/widget.dart';
 
-class ProfileScreen extends StatelessWidget {
+import '../../widget/base_cubit_stateful_widget.dart';
+import 'home_screen.dart';
+
+class ProfileScreen extends BaseCubitStatefulWidget {
   const ProfileScreen({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    final theme = Theme.of(context);
-    final size = MediaQuery.of(context).size;
-    return Scaffold(
-      body: SafeArea(
-          child: Padding(
-        padding: const EdgeInsets.all(Dimens.size32),
-        child: Column(
-          children: [
-            _rowLogoAndSetting(theme, context),
-            const SizedBox(
-              height: Dimens.heigh150,
-            ),
-            Image.asset(
-              Constants.profile_image,
-              height: Dimens.size200,
-            ),
-            const SizedBox(
-              height: Dimens.size32,
-            ),
-            _rowFullName(theme),
-            const SizedBox(
-              height: Dimens.size18,
-            ),
-            _rowEmail(theme),
-            const SizedBox(
-              height: Dimens.size16,
-            ),
-            _rowPassword(theme),
-            const SizedBox(
-              height: Dimens.size16,
-            ),
-            CustomButton(
-                textColors: theme.colorScheme.onSecondary,
-                text: tr('log_out'),
-                onclick: () {
-                  Navigator.pop(context);
-                }),
-          ],
-        ),
-      )),
-    );
-  }
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
 
+class _ProfileScreenState
+    extends BaseCubitStateFulWidgetState<ProfileBloc, ProfileScreen> {
   Widget _rowLogoAndSetting(ThemeData theme, BuildContext context) {
     return Row(
       children: [
@@ -107,8 +74,6 @@ class ProfileScreen extends StatelessWidget {
   void selectedSettings(int selected, BuildContext context) {
     switch (selected) {
       case 0:
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const TaskDetail()));
         break;
       case 1:
         Navigator.pop(context);
@@ -171,6 +136,64 @@ class ProfileScreen extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  @override
+  Widget buildBody(BuildContext context) {
+    final theme = Theme.of(context);
+    final size = MediaQuery.of(context).size;
+    return Scaffold(
+      body: SafeArea(
+        child: BlocProvider(
+          create: (BuildContext context) => bloc,
+          child: BlocConsumer<ProfileBloc,BaseState>(
+            builder: (BuildContext context, state) {
+              return Padding(
+                padding: const EdgeInsets.all(Dimens.size32),
+                child: Column(
+                  children: [
+                    _rowLogoAndSetting(theme, context),
+                    const SizedBox(
+                      height: Dimens.heigh150,
+                    ),
+                    Image.asset(
+                      Constants.profile_image,
+                      height: Dimens.size200,
+                    ),
+                    const SizedBox(
+                      height: Dimens.size32,
+                    ),
+                    _rowFullName(theme),
+                    const SizedBox(
+                      height: Dimens.size18,
+                    ),
+                    _rowEmail(theme),
+                    const SizedBox(
+                      height: Dimens.size16,
+                    ),
+                    _rowPassword(theme),
+                    const SizedBox(
+                      height: Dimens.size16,
+                    ),
+                    CustomButton(
+                        textColors: theme.colorScheme.onSecondary,
+                        text: tr('log_out'),
+                        onclick: () {
+                         bloc.signOut();
+                        }),
+                  ],
+                ),
+              );
+            },
+            listener: (BuildContext context, Object? state) {
+              if(state is LogOut){
+                Navigator.pushAndRemoveUntil(context, MaterialPageRoute(builder: (context)=>const HomeScreen()), (route) => false);
+              }
+            },
+          ),
+        ),
+      ),
     );
   }
 }

@@ -105,6 +105,7 @@ class _LoginPageState
                   Padding(
                     padding: const EdgeInsets.all(Dimens.size16),
                     child: CustomButton(
+                      textColors: theme.colorScheme.onSecondary,
                       onclick: () {
                         // var service = AppDependencies.injector.get<AuthService>();
                         // service.LoginAuthentication();

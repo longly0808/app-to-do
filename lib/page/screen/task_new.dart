@@ -8,8 +8,15 @@ import '../../widget/commons/custom_button.dart';
 import '../../widget/commons/date_picker.dart';
 
 class TaskNew extends StatefulWidget {
-  TaskNew({Key? key, this.task}) : super(key: key);
-  final Task? task;
+  const TaskNew({
+    Key? key,
+    required this.title,
+    required this.description,
+    required this.date,
+  }) : super(key: key);
+  final String title;
+  final String description;
+  final DateTime date;
 
   @override
   State<TaskNew> createState() => _TaskDetailState();
@@ -46,7 +53,6 @@ class _TaskDetailState extends State<TaskNew> {
               ),
               child: BorderTextFieldInput(
                 hintText: 'title',
-                initText: widget.task?.title??'',
                 isShowBorder: true,
                 onChanged: (value) {},
               ),
@@ -54,7 +60,6 @@ class _TaskDetailState extends State<TaskNew> {
             Expanded(
               child: BorderTextFieldInput(
                 hintText: 'Description',
-                initText: widget.task?.description??'',
                 isShowBorder: true,
                 keyboardType: TextInputType.multiline,
                 maxLines: Dimens.num10,
@@ -66,7 +71,7 @@ class _TaskDetailState extends State<TaskNew> {
             ),
             CustomDatePicker(
               title: '',
-              initialDate: widget.task?.created_time??DateTime.now(),
+              initialDate: widget.date,
               lastDate: DateTime(2200),
               firstDate: DateTime.now(),
               onChanged: (value) {},

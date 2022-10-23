@@ -1,78 +1,109 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:to_do_list/bloc/bloc.dart';
 import 'package:to_do_list/config/config.dart';
+import 'package:to_do_list/core/bloc/base_state.dart';
+import 'package:to_do_list/model/view/list_task_model.dart';
+import 'package:to_do_list/page/screen/home_screen.dart';
+import 'package:to_do_list/utility/convert.dart';
+import 'package:to_do_list/widget/base_cubit_stateful_widget.dart';
 import '../../constant.dart';
-import '../../model/service/task.dart';
+import '../../model/model.dart';
 import '../../style/style.dart';
 import '../../widget/item_task.dart';
 import 'profile_screen.dart';
 import 'task_detail.dart';
 import 'task_new.dart';
 
-class ListTaskScreen extends StatefulWidget {
-  const ListTaskScreen({Key? key,required this.token}) : super(key: key);
+class ListTaskScreen extends BaseCubitStatefulWidget {
+  const ListTaskScreen({Key? key, required this.token}) : super(key: key);
   final String token;
 
   @override
   State<ListTaskScreen> createState() => _ListTaskScreenState();
 }
 
-class _ListTaskScreenState extends State<ListTaskScreen> {
+class _ListTaskScreenState
+    extends BaseCubitStateFulWidgetState<ListTaskBloc, ListTaskScreen> {
   @override
   void initState() {
     Config.token = widget.token;
     super.initState();
   }
+
   @override
-  Widget build(BuildContext context) {
-    return _HomeBody(context);
+  Widget buildBody(BuildContext context) {
+    final theme = Theme.of(context);
+    return BlocProvider(
+        create: (context) => bloc,
+        child: Scaffold(
+          floatingActionButton: FloatingActionButton(
+            onPressed: () {
+              showModalBottomSheet(
+                shape: const RoundedRectangleBorder(
+                  borderRadius: BorderRadius.vertical(
+                    top: Radius.circular(Dimens.size50),
+                  ),
+                ),
+                isScrollControlled: true,
+                context: context,
+                builder: (context) {
+                  return TaskNew(
+                      title: 'work from home',
+                      description: 'do something',
+                      date: DateTime.now());
+                },
+              );
+            },
+            backgroundColor: theme.colorScheme.primary,
+            child: Icon(
+              Icons.add,
+              color: theme.colorScheme.onSecondary,
+              size: Dimens.size40,
+            ),
+          ),
+          body: SafeArea(
+            child: BlocConsumer<ListTaskBloc, BaseState>(
+              listener: (BuildContext context, state) {},
+              builder: (context, state) {
+                if (state is LoadedState) {
+                  final model = state.model;
+                  return _homeBody(context, model, theme);
+                } else {
+                  return Center(
+                    child: Container(
+                      color: Colors.red,
+                      width: 200,
+                      height: 200,
+                    ),
+                  );
+                }
+              },
+            ),
+          ),
+        ));
   }
 
-  Widget _HomeBody(BuildContext context) {
-    final theme = Theme.of(context);
+  Widget _homeBody(BuildContext context, ListTaskModel model, ThemeData theme) {
     final size = MediaQuery.of(context).size;
-    return Scaffold(
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          showModalBottomSheet(
-            shape: const RoundedRectangleBorder(
-              borderRadius: BorderRadius.vertical(
-                top: Radius.circular(Dimens.size50),
-              ),
-            ),
-            isScrollControlled: true,
-            context: context,
-            builder: (context) {
-              return TaskNew();
-            },
-          );
-        },
-        backgroundColor: theme.colorScheme.primary,
-        child: Icon(
-          Icons.add,
-          color: theme.colorScheme.onSecondary,
-          size: Dimens.size40,
-        ),
+    return Padding(
+      padding: const EdgeInsets.all(Dimens.size16),
+      child: Column(
+        children: [
+          _rowLogoAndSetting(theme),
+          const SizedBox(
+            height: Dimens.size32,
+          ),
+          _rowTittleList(theme),
+          const SizedBox(
+            height: Dimens.size16,
+          ),
+          Expanded(
+            child: _listTask(context, theme, model.tasks ?? []),
+          ),
+        ],
       ),
-      body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.all(Dimens.size16),
-            child: Column(
-              children: [
-                _rowLogoAndSetting(theme),
-                const SizedBox(
-                  height: Dimens.size32,
-                ),
-                _rowTittleList(theme),
-                const SizedBox(
-                  height: Dimens.size16,
-                ),
-                Expanded(
-                  child: _listTask(context, theme),
-                ),
-              ],
-            ),
-          )),
     );
   }
 
@@ -110,18 +141,7 @@ class _ListTaskScreenState extends State<ListTaskScreen> {
             color: theme.primaryColorDark,
             height: Dimens.size20,
           ),
-        )
-        // InkWell(
-        //   onTap: () {
-        //
-        //   },
-        //   child: Image.asset(
-        //     Constants.icon_settings,
-        //     fit: BoxFit.cover,
-        //     color: theme.primaryColorDark,
-        //     height: Dimens.size20,
-        //   ),
-        // )
+        ),
       ],
     );
   }
@@ -129,9 +149,6 @@ class _ListTaskScreenState extends State<ListTaskScreen> {
   void selectedSettings(int selected) {
     switch (selected) {
       case 0:
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const TaskDetail()));
-
         break;
       case 1:
         Navigator.push(context,
@@ -169,27 +186,30 @@ class _ListTaskScreenState extends State<ListTaskScreen> {
     );
   }
 
-  Widget _listTask(BuildContext context, ThemeData theme) {
+  Widget _listTask(BuildContext context, ThemeData theme, List<Task> tasks) {
     return ListView.builder(
-        itemCount: 3,
+        reverse: true,
+        itemCount: tasks.length,
         itemBuilder: (context, index) {
+          final item = tasks[index];
+          DateTime dateTime = DateTime.parse(item.created_at ?? '');
           return GestureDetector(
-            onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => const TaskDetail()));
-            },
-            child: ItemTask(
-              colorCard: theme.colorScheme.primary
-                  .withOpacity(index % 2 != 0 ? 0.5 : 1),
-              isShowIconClock: index % 2 == 0 ? true : false,
-              task: Task(
-                title: 'aa',
-                id: index,
-                created_time: DateTime.now(),
-                description: 'djwiqojdioqwjiodjwio',
-              ),
-            ),
-          );
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => TaskDetail(task: item),
+                  ),
+                );
+              },
+              child: ItemTask(
+                title: item.content ?? '',
+                description: item.description ?? '',
+                dateTime: dateTime,
+                colorCard: theme.colorScheme.primary
+                    .withOpacity(index % 2 != 0 ? 0.5 : 1),
+                isShowIconClock: index % 2 == 0 ? true : false,
+              ));
         });
   }
 }

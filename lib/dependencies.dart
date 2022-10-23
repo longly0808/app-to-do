@@ -10,6 +10,5 @@ class AppDependencies{
   static Future initialize()  async{
     ServiceDependencies.init(injector);
     BlocDependencies.init(injector);
-
   }
 }

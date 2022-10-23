@@ -1,5 +1,6 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:to_do_list/page/screen/home_screen.dart';
 import 'package:to_do_list/style/my_theme.dart';
 
@@ -9,6 +10,7 @@ import 'utility/utility.dart';
 void main() async {
   await EasyLocalization.ensureInitialized();
   await AppDependencies.initialize();
+  await EasyLoading.init();
   runApp(
     EasyLocalization(
       supportedLocales: LocalizationHelper.supportedLocale,

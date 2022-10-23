@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:to_do_list/utility/convert.dart';
 
-import '../model/model.dart';
 import '../style/style.dart';
 
 class ItemTask extends StatefulWidget {
-  const ItemTask({Key? key,this.colorCard,this.isShowIconClock, this.task}) : super(key: key);
+  const ItemTask({
+    Key? key,
+    this.colorCard,
+    this.isShowIconClock,
+    required this.title,
+    required this.dateTime,
+    required this.description,
+  }) : super(key: key);
   final bool? isShowIconClock;
   final Color? colorCard;
-  final Task? task;
-
+  final String title;
+  final String description;
+  final DateTime dateTime;
 
   @override
   State<ItemTask> createState() => _ItemTaskState();
@@ -18,15 +26,15 @@ class _ItemTaskState extends State<ItemTask> {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final size=  MediaQuery.of(context).size;
+    final size = MediaQuery.of(context).size;
     return Container(
-        height: 200,
+        height: Dimens.size200,
         margin: const EdgeInsets.symmetric(vertical: Dimens.size16),
         padding: const EdgeInsets.symmetric(
             vertical: Dimens.size16, horizontal: Dimens.size16),
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(15.0),
-          color: widget.colorCard?? theme.colorScheme.primary,
+          borderRadius: BorderRadius.circular(Dimens.size16),
+          color: widget.colorCard ?? theme.colorScheme.primary,
         ),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -36,7 +44,7 @@ class _ItemTaskState extends State<ItemTask> {
               children: [
                 Expanded(
                   child: Text(
-                    widget.task?.title?? '',
+                    widget.title,
                     style: theme.textTheme.bodyText1!
                         .copyWith(color: theme.colorScheme.onSecondary),
                     maxLines: 1,
@@ -45,7 +53,7 @@ class _ItemTaskState extends State<ItemTask> {
                 ),
                 const Spacer(),
                 Visibility(
-                  visible:widget.isShowIconClock?? true,
+                  visible: widget.isShowIconClock ?? true,
                   child: Icon(
                     Icons.watch_later_outlined,
                     color: theme.colorScheme.onSecondary,
@@ -58,7 +66,7 @@ class _ItemTaskState extends State<ItemTask> {
             ),
             Expanded(
               child: Text(
-                widget.task?.description?? '',
+                widget.description,
                 style: theme.textTheme.bodyText2!
                     .copyWith(color: theme.colorScheme.onSecondary),
                 maxLines: 5,
@@ -66,7 +74,7 @@ class _ItemTaskState extends State<ItemTask> {
               ),
             ),
             Text(
-              widget.task?.created_time !=null? 'created by ${widget.task?.created_time}':'created by ${DateTime.now()}',
+              'created by ${ConvertUtility.calendarFormat(widget.dateTime)}',
               style: theme.textTheme.bodyText2!
                   .copyWith(color: theme.colorScheme.onSecondary),
               maxLines: 1,

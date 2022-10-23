@@ -1,16 +1,15 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:to_do_list/constant.dart';
+import 'package:to_do_list/model/service/api/task.dart';
 import 'package:to_do_list/style/style.dart';
-import 'package:to_do_list/widget/commons/border_text_input.dart';
 import 'package:to_do_list/widget/widget.dart';
 
-import '../../model/service/task.dart';
 
 class TaskDetail extends StatefulWidget {
-  const TaskDetail({Key? key, this.task}) : super(key: key);
-  final Task? task;
+  const TaskDetail({Key? key,required this.task }) : super(key: key);
+  final Task task;
+
 
   @override
   State<TaskDetail> createState() => _TaskDetailState();
@@ -40,8 +39,8 @@ class _TaskDetailState extends State<TaskDetail> {
               colorEnableBorder: theme.primaryColorDark,
               focusBorderColor: theme.primaryColorDark,
               cursorColor: theme.primaryColorDark,
-              hintText: _isUpdate == true ? 'description' : '',
-              initText: widget.task?.description ?? 'title',
+              hintText: _isUpdate == true ? 'title' : '',
+              initText: widget.task.content ?? '',
               colorHint: theme.primaryColorDark.withOpacity(0.5),
               onChanged: (value) {},
               isShowBorder: true,
@@ -71,21 +70,7 @@ class _TaskDetailState extends State<TaskDetail> {
               colorHint: theme.primaryColorDark.withOpacity(0.5),
               onChanged: (value) {},
               isShowBorder: true,
-              initText:
-                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
-                  ". Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, wh"
-                  "en an unknown printer took a galley of type and scrambled it to make a type specime"
-                  "n book. It has survived not only five centuries, but also the leap into electronic t"
-                  "ypesetting, remaining essentially unchanged. It was popularised in the 1960s with the re"
-                  "lease of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop p"
-                  "ublishing software like Aldus PageMaker including versions of Lorem Ipsum."
-                  "Lorem Ipsum is simply dummy text of the printing and typesetting industry"
-                  ". Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, wh"
-                  "en an unknown printer took a galley of type and scrambled it to make a type specime"
-                  "n book. It has survived not only five centuries, but also the leap into electronic t"
-                  "ypesetting, remaining essentially unchanged. It was popularised in the 1960s with the re"
-                  "lease of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop p"
-                  "ublishing software like Aldus PageMaker including versions of Lorem Ipsum.",
+              initText:widget.task.description??'',
               textStyle: theme.textTheme.bodyText1!
                   .copyWith(color: theme.primaryColorDark),
               keyboardType: TextInputType.multiline,

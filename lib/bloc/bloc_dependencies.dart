@@ -10,5 +10,7 @@ class BlocDependencies {
   static init(GetIt injector){
     injector.registerFactory<AuthenticationBloc>(() => AuthenticationBloc(injector()));
     injector.registerFactory<LoginBloc>(() => LoginBloc(injector()));
+    injector.registerFactory<ListTaskBloc>(() => ListTaskBloc(injector(),injector()));
+    injector.registerFactory<ProfileBloc>(() => ProfileBloc(injector()));
   }
 }
