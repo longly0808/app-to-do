@@ -79,6 +79,29 @@ class _TaskDetailState extends State<TaskDetail> {
                 textInputAction: TextInputAction.newline,
                 autovalidateMode: AutovalidateMode.onUserInteraction,
               ),
+              Visibility(
+                visible: _isUpdate,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: Dimens.size4),
+                  child: Divider(
+                    color: theme.primaryColorDark,
+                    endIndent: Dimens.size16,
+                    indent: Dimens.size16,
+                  ),
+                ),
+              ),
+              Visibility(
+                visible: _isUpdate,
+                child: CustomButton(
+                  onclick: (){},
+                  textColors: theme.primaryColorDark,
+                  colorBorder: theme.primaryColorDark,
+                  colors: theme.colorScheme.onSecondary,
+                  borderRadius: Dimens.size16,
+                  text: tr('update'),
+
+                )
+              ),
             ],
           ),
         ),

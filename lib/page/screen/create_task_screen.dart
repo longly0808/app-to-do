@@ -30,7 +30,7 @@ class CreateTaskScreen extends StatefulWidget {
 }
 
 class _TaskDetailState extends State<CreateTaskScreen> {
-  TaskModel taskModel = TaskModel();
+  TaskModel taskModel = TaskModel(toDate: ConvertUtility.convertDatetimeToString(DateTime.now()));
   final GlobalKey<FormState> _formKey = GlobalKey();
   final bloc = AppDependencies.injector.get<CreateTaskBloc>();
 
@@ -98,10 +98,9 @@ class _TaskDetailState extends State<CreateTaskScreen> {
                     title: '',
                     initialDate: widget.date,
                     lastDate: DateTime(2200),
-                    firstDate: DateTime.now(),
+                    firstDate: taskModel.getDate,
                     onChanged: (value) {
-                      taskModel.toDate = ConvertUtility.convertDateTimeToString(
-                          value ?? DateTime.now());
+                      taskModel.toDate = ConvertUtility.convertDatetimeToString(value);
                     },
                   ),
                   const SizedBox(

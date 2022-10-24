@@ -18,5 +18,6 @@
   "title": "Title",
   "description": "Description",
   "add_to_do":"Add to do",
+  "update": "update",
   "end_json": "end_json thêm resource phía trên dòng này."
 }

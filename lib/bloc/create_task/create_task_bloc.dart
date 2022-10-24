@@ -16,8 +16,7 @@ class CreateTaskBloc extends BaseCubit {
     CreateTaskRequest createTaskRequest = CreateTaskRequest(
       content: task.content,
       description: task.description,
-      due_datetime: ConvertUtility.convertStringUTCToStringCalendarDate(
-          task.toDate ?? ''),
+      due_datetime: task.toDate,
     );
     final response = await _taskService.createNewTask(
       createTaskRequest: createTaskRequest,
