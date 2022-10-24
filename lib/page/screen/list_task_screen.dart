@@ -14,7 +14,7 @@ import '../../style/style.dart';
 import '../../widget/item_task.dart';
 import 'profile_screen.dart';
 import 'task_detail.dart';
-import 'task_new.dart';
+import 'create_task_screen.dart';
 
 class ListTaskScreen extends BaseCubitStatefulWidget {
   const ListTaskScreen({Key? key, required this.token}) : super(key: key);
@@ -49,10 +49,16 @@ class _ListTaskScreenState
                 isScrollControlled: true,
                 context: context,
                 builder: (context) {
-                  return TaskNew(
+                  return CreateTaskScreen(
                       title: 'work from home',
                       description: 'do something',
                       date: DateTime.now());
+                },
+              ).then(
+                (value) {
+                  if (value == true) {
+                    bloc.loadListTask();
+                  }
                 },
               );
             },

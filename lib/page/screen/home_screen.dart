@@ -32,6 +32,7 @@ class _HomeScreenState
   @override
   Widget buildBody(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: BlocProvider(
         create: (context) => bloc,
         child: BlocConsumer<AuthenticationBloc, BaseState>(

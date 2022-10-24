@@ -10,7 +10,7 @@ import 'package:to_do_list/service/share_preferences/user_preferences.dart';
 
 class ListTaskBloc extends BaseCubit{
   UserPreferences _userPreferences;
-  LoadListService _listTaskService;
+  TaskService _listTaskService;
   ListTaskBloc(this._userPreferences,this._listTaskService):super(InitialState());
 
   @override

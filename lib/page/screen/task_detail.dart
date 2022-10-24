@@ -23,64 +23,66 @@ class _TaskDetailState extends State<TaskDetail> {
     final theme = Theme.of(context);
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      body: Container(
-        padding: const EdgeInsets.all(Dimens.size16),
-        width: size.width,
-        height: size.height,
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            _rowIconHeader(theme),
-            const SizedBox(
-              height: Dimens.size16,
-            ),
-            BorderTextFieldInput(
-              enabled: _isUpdate,
-              colorEnableBorder: theme.primaryColorDark,
-              focusBorderColor: theme.primaryColorDark,
-              cursorColor: theme.primaryColorDark,
-              hintText: _isUpdate == true ? 'title' : '',
-              initText: widget.task.content ?? '',
-              colorHint: theme.primaryColorDark.withOpacity(0.5),
-              onChanged: (value) {},
-              isShowBorder: true,
-              textStyle: theme.textTheme.headline4!
-                  .copyWith(color: theme.primaryColorDark),
-              keyboardType: TextInputType.multiline,
-              textInputAction: TextInputAction.newline,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-            ),
-            Visibility(
-              visible: _isUpdate,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: Dimens.size4),
-                child: Divider(
-                  color: theme.primaryColorDark,
-                  endIndent: Dimens.size16,
-                  indent: Dimens.size16,
+      body: SafeArea(
+        child: Container(
+          padding: const EdgeInsets.all(Dimens.size16),
+          width: size.width,
+          height: size.height,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              _rowIconHeader(theme),
+              const SizedBox(
+                height: Dimens.size16,
+              ),
+              BorderTextFieldInput(
+                enabled: _isUpdate,
+                colorEnableBorder: theme.primaryColorDark,
+                focusBorderColor: theme.primaryColorDark,
+                cursorColor: theme.primaryColorDark,
+                hintText: _isUpdate == true ? 'title' : '',
+                initText: widget.task.content ?? '',
+                colorHint: theme.primaryColorDark.withOpacity(0.5),
+                onChanged: (value) {},
+                isShowBorder: true,
+                textStyle: theme.textTheme.headline4!
+                    .copyWith(color: theme.primaryColorDark),
+                keyboardType: TextInputType.multiline,
+                textInputAction: TextInputAction.newline,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+              ),
+              Visibility(
+                visible: _isUpdate,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: Dimens.size4),
+                  child: Divider(
+                    color: theme.primaryColorDark,
+                    endIndent: Dimens.size16,
+                    indent: Dimens.size16,
+                  ),
                 ),
               ),
-            ),
-            BorderTextFieldInput(
-              enabled: _isUpdate,
-              colorEnableBorder: theme.primaryColorDark,
-              focusBorderColor: theme.primaryColorDark,
-              cursorColor: theme.primaryColorDark,
-              hintText: _isUpdate ? 'description' : '',
-              colorHint: theme.primaryColorDark.withOpacity(0.5),
-              onChanged: (value) {},
-              isShowBorder: true,
-              initText:widget.task.description??'',
-              textStyle: theme.textTheme.bodyText1!
-                  .copyWith(color: theme.primaryColorDark),
-              keyboardType: TextInputType.multiline,
-              maxLines: 20,
-              textInputAction: TextInputAction.newline,
-              autovalidateMode: AutovalidateMode.onUserInteraction,
-            ),
-          ],
+              BorderTextFieldInput(
+                enabled: _isUpdate,
+                colorEnableBorder: theme.primaryColorDark,
+                focusBorderColor: theme.primaryColorDark,
+                cursorColor: theme.primaryColorDark,
+                hintText: _isUpdate ? 'description' : '',
+                colorHint: theme.primaryColorDark.withOpacity(0.5),
+                onChanged: (value) {},
+                isShowBorder: true,
+                initText:widget.task.description??'',
+                textStyle: theme.textTheme.bodyText1!
+                    .copyWith(color: theme.primaryColorDark),
+                keyboardType: TextInputType.multiline,
+                maxLines: 20,
+                textInputAction: TextInputAction.newline,
+                autovalidateMode: AutovalidateMode.onUserInteraction,
+              ),
+            ],
+          ),
         ),
-      ),
+      )
     );
   }
 

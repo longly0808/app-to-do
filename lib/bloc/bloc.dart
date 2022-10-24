@@ -6,3 +6,5 @@ export 'list_task/list_task_bloc.dart';
 export 'list_task/list_task_state.dart';
 export 'profile/profile_bloc.dart';
 export 'profile/profile_state.dart';
+export 'create_task/create_task_bloc.dart';
+export 'create_task/create_task_state.dart';

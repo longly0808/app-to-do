@@ -15,5 +15,8 @@
   "home": "Home",
   "log_out_upcase":"log out",
   "theme": "Theme",
+  "title": "Title",
+  "description": "Description",
+  "add_to_do":"Add to do",
   "end_json": "end_json thêm resource phía trên dòng này."
 }

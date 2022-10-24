@@ -56,17 +56,6 @@ class _ProfileScreenState
             height: Dimens.size20,
           ),
         )
-        // InkWell(
-        //   onTap: () {
-        //
-        //   },
-        //   child: Image.asset(
-        //     Constants.icon_settings,
-        //     fit: BoxFit.cover,
-        //     color: theme.primaryColorDark,
-        //     height: Dimens.size20,
-        //   ),
-        // )
       ],
     );
   }

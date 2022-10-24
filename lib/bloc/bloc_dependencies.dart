@@ -12,5 +12,6 @@ class BlocDependencies {
     injector.registerFactory<LoginBloc>(() => LoginBloc(injector()));
     injector.registerFactory<ListTaskBloc>(() => ListTaskBloc(injector(),injector()));
     injector.registerFactory<ProfileBloc>(() => ProfileBloc(injector()));
+    injector.registerFactory<CreateTaskBloc>(() => CreateTaskBloc(injector()));
   }
 }

@@ -8,9 +8,11 @@ import 'dependencies.dart';
 import 'utility/utility.dart';
 
 void main() async {
+   WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await AppDependencies.initialize();
-  await EasyLoading.init();
+  initApp();
+
   runApp(
     EasyLocalization(
       supportedLocales: LocalizationHelper.supportedLocale,
@@ -20,6 +22,10 @@ void main() async {
       child: const MyApp(),
     ),
   );
+}
+Future<void> initApp() async{
+
+  // EasyLoading.init();
 }
 
 class MyApp extends StatelessWidget {
