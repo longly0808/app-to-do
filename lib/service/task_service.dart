@@ -36,10 +36,9 @@ class TaskService {
     }
   }
 
-  Future<Response> updateNewTask({
+  Future<Response> updateTask({
     required UpdateTaskRequest updateTaskRequest,
     required String uidGen,
-    required String idTask,
   }) async {
     Dio dio = AppDependencies.injector.get<Dio>();
     try {
@@ -47,7 +46,7 @@ class TaskService {
         ..headers["Authorization"] = "Bearer ${Config.token}"
         ..headers["Content-Type"] = "application/json"
         ..headers["X-Request-Id"] = uidGen;
-      final response = dio.post("${Config.BASEURL}/$idTask",data: updateTaskRequest);
+      final response = dio.post("${Config.BASEURL}/${updateTaskRequest.id}",data: updateTaskRequest);
 
       return response;
     } catch (e) {

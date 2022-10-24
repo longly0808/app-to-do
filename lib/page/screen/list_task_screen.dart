@@ -13,7 +13,7 @@ import '../../model/model.dart';
 import '../../style/style.dart';
 import '../../widget/item_task.dart';
 import 'profile_screen.dart';
-import 'task_detail.dart';
+import 'task_detail_screen.dart';
 import 'create_task_screen.dart';
 
 class ListTaskScreen extends BaseCubitStatefulWidget {
