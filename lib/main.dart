@@ -74,6 +74,7 @@ class _MyHomePageState extends State<MyHomePage> {
       locale: context.locale,
       supportedLocales: context.supportedLocales,
       debugShowCheckedModeBanner: false,
+      builder: EasyLoading.init(),
       home: const Scaffold(
         body: SafeArea(
           child:HomeScreen()

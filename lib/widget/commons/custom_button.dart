@@ -12,6 +12,7 @@ class CustomButton extends StatefulWidget {
     this.textColors,
     required this.onclick,
     this.text,
+    this.colorBorder,
   }) : super(key: key);
   final double? borderRadius;
   final double? height;
@@ -20,6 +21,7 @@ class CustomButton extends StatefulWidget {
   final VoidCallback onclick;
   final String? text;
   final Color? textColors;
+  final Color? colorBorder;
 
   @override
   State<StatefulWidget> createState() => _CustomButtonState();
@@ -43,6 +45,7 @@ class _CustomButtonState extends State<CustomButton> {
                 ? (widget.colors ?? theme.colorScheme.primary)
                 : (widget.colors ?? theme.colorScheme.primary)
                     .withOpacity(0.9)),
+            border: Border.all(color:widget.colorBorder?? Colors.transparent, width: Dimens.size2 ),
             borderRadius:
                 BorderRadius.circular(widget.borderRadius ?? Dimens.size5),
           ),

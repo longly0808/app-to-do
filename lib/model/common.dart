@@ -1,3 +1,5 @@
+import 'package:to_do_list/utility/convert.dart';
+
 class TaskModel {
   String? id;
   String? content;
@@ -14,4 +16,7 @@ class TaskModel {
     this.toDate,
     this.isFinish,
   });
+
+   DateTime get getDate => ConvertUtility.convertStringToDateTime(toDate)?? DateTime.now();
+
 }
