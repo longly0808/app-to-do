@@ -74,6 +74,7 @@ class _TaskDetailState extends State<CreateTaskScreen> {
                     ),
                     child: BorderTextFieldInput(
                       hintText: tr('title'),
+                      initText: taskModel.content??'',
                       isShowBorder: true,
                       onChanged: (value) {
                         taskModel.content = value ?? '';
@@ -83,6 +84,7 @@ class _TaskDetailState extends State<CreateTaskScreen> {
                   Expanded(
                     child: BorderTextFieldInput(
                       hintText: tr('description'),
+                      initText: taskModel.description??'',
                       isShowBorder: true,
                       keyboardType: TextInputType.multiline,
                       maxLines: Dimens.num10,

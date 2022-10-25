@@ -5,7 +5,7 @@ import 'package:to_do_list/bloc/bloc.dart';
 
 import 'package:to_do_list/constant.dart';
 import 'package:to_do_list/core/bloc/base_state.dart';
-import 'package:to_do_list/page/screen/task_detail.dart';
+import 'package:to_do_list/page/screen/task_detail_screen.dart';
 import 'package:to_do_list/style/style.dart';
 import 'package:to_do_list/widget/widget.dart';
 
