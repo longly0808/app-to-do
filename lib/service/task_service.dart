@@ -46,7 +46,8 @@ class TaskService {
         ..headers["Authorization"] = "Bearer ${Config.token}"
         ..headers["Content-Type"] = "application/json"
         ..headers["X-Request-Id"] = uidGen;
-      final response = dio.post("${Config.BASEURL}/${updateTaskRequest.id}",data: updateTaskRequest);
+      var json = updateTaskRequest.toJson();
+      final response =await  dio.post("${Config.BASEURL}/${updateTaskRequest.id}",data: json);
 
       return response;
     } catch (e) {

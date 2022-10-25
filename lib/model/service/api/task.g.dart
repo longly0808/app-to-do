@@ -24,7 +24,7 @@ Task _$TaskFromJson(Map<String, dynamic> json) => Task(
       json['created_at'] as String?,
       json['due'] == null
           ? null
-          : Due.formJson(json['due'] as Map<String, dynamic>),
+          : Due.fromJson(json['due'] as Map<String, dynamic>),
       json['url'] as String?,
     );
 
@@ -53,6 +53,7 @@ Due _$DueFromJson(Map<String, dynamic> json) => Due(
       json['string'] as String?,
       json['lang'] as String?,
       json['is_recurring'] as bool?,
+      json['datetime'] as String?,
     );
 
 Map<String, dynamic> _$DueToJson(Due instance) => <String, dynamic>{
@@ -60,4 +61,5 @@ Map<String, dynamic> _$DueToJson(Due instance) => <String, dynamic>{
       'string': instance.string,
       'lang': instance.lang,
       'is_recurring': instance.is_recurring,
+      'datetime': instance.datetime,
     };

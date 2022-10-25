@@ -15,7 +15,7 @@ Map<String, dynamic> _$UpdateTaskResponseToJson(UpdateTaskResponse instance) =>
 UpdateTaskRequest _$UpdateTaskRequestFromJson(Map<String, dynamic> json) =>
     UpdateTaskRequest(
       id: json['id'] as String,
-      contents: json['contents'] as String?,
+      content: json['content'] as String?,
       description: json['description'] as String?,
       is_completed: json['is_completed'] as bool?,
       due_datetime: json['due_datetime'] as String?,
@@ -32,7 +32,7 @@ Map<String, dynamic> _$UpdateTaskRequestToJson(UpdateTaskRequest instance) {
     }
   }
 
-  writeNotNull('contents', instance.contents);
+  writeNotNull('content', instance.content);
   writeNotNull('description', instance.description);
   writeNotNull('is_completed', instance.is_completed);
   writeNotNull('due_datetime', instance.due_datetime);

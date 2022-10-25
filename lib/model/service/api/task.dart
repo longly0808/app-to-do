@@ -54,11 +54,12 @@ class Due {
   String? string;
   String? lang;
   bool? is_recurring;
+  String? datetime;
 
 
-  Due(this.date, this.string, this.lang, this.is_recurring);
+  Due(this.date, this.string, this.lang, this.is_recurring, this.datetime);
 
-  factory Due.formJson(Map<String, dynamic> json) => _$DueFromJson(json);
+  factory Due.fromJson(Map<String, dynamic> json) => _$DueFromJson(json);
 
   Map<String, dynamic> toJson() => _$DueToJson(this);
 }

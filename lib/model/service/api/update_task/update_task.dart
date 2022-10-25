@@ -8,7 +8,7 @@ class UpdateTaskResponse {}
 class UpdateTaskRequest {
   String id;
   @JsonKey(includeIfNull: false)
-  String? contents;
+  String? content;
   @JsonKey(includeIfNull: false)
   String? description;
   @JsonKey(includeIfNull: false)
@@ -18,7 +18,7 @@ class UpdateTaskRequest {
 
   UpdateTaskRequest({
     required this.id,
-    this.contents,
+    this.content,
     this.description,
     this.is_completed,
     this.due_datetime,

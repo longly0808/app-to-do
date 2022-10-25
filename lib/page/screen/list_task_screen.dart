@@ -29,6 +29,7 @@ class _ListTaskScreenState
   @override
   void initState() {
     Config.token = widget.token;
+    bloc.loadListTask();
     super.initState();
   }
 
@@ -38,37 +39,6 @@ class _ListTaskScreenState
     return BlocProvider(
         create: (context) => bloc,
         child: Scaffold(
-          floatingActionButton: FloatingActionButton(
-            onPressed: () {
-              showModalBottomSheet(
-                shape: const RoundedRectangleBorder(
-                  borderRadius: BorderRadius.vertical(
-                    top: Radius.circular(Dimens.size50),
-                  ),
-                ),
-                isScrollControlled: true,
-                context: context,
-                builder: (context) {
-                  return CreateTaskScreen(
-                      title: 'work from home',
-                      description: 'do something',
-                      date: DateTime.now());
-                },
-              ).then(
-                (value) {
-                  if (value == true) {
-                    bloc.loadListTask();
-                  }
-                },
-              );
-            },
-            backgroundColor: theme.colorScheme.primary,
-            child: Icon(
-              Icons.add,
-              color: theme.colorScheme.onSecondary,
-              size: Dimens.size40,
-            ),
-          ),
           body: SafeArea(
             child: BlocConsumer<ListTaskBloc, BaseState>(
               listener: (BuildContext context, state) {},
@@ -77,13 +47,7 @@ class _ListTaskScreenState
                   final model = state.model;
                   return _homeBody(context, model, theme);
                 } else {
-                  return Center(
-                    child: Container(
-                      color: Colors.red,
-                      width: 200,
-                      height: 200,
-                    ),
-                  );
+                  return const SizedBox();
                 }
               },
             ),
@@ -93,22 +57,55 @@ class _ListTaskScreenState
 
   Widget _homeBody(BuildContext context, ListTaskModel model, ThemeData theme) {
     final size = MediaQuery.of(context).size;
-    return Padding(
-      padding: const EdgeInsets.all(Dimens.size16),
-      child: Column(
-        children: [
-          _rowLogoAndSetting(theme),
-          const SizedBox(
-            height: Dimens.size32,
-          ),
-          _rowTittleList(theme),
-          const SizedBox(
-            height: Dimens.size16,
-          ),
-          Expanded(
-            child: _listTask(context, theme, model.tasks ?? []),
-          ),
-        ],
+    return Scaffold(
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          showModalBottomSheet(
+            shape: const RoundedRectangleBorder(
+              borderRadius: BorderRadius.vertical(
+                top: Radius.circular(Dimens.size50),
+              ),
+            ),
+            isScrollControlled: true,
+            context: context,
+            builder: (context) {
+              return CreateTaskScreen(
+                  title: 'work from home',
+                  description: 'do something',
+                  date: DateTime.now());
+            },
+          ).then(
+            (value) {
+              if (value == true) {
+                bloc.loadListTask();
+              }
+            },
+          );
+        },
+        backgroundColor: theme.colorScheme.primary,
+        child: Icon(
+          Icons.add,
+          color: theme.colorScheme.onSecondary,
+          size: Dimens.size40,
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(Dimens.size16),
+        child: Column(
+          children: [
+            _rowLogoAndSetting(theme),
+            const SizedBox(
+              height: Dimens.size32,
+            ),
+            _rowTittleList(theme),
+            const SizedBox(
+              height: Dimens.size16,
+            ),
+            Expanded(
+              child: _listTask(context, theme, model.tasks ?? []),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -192,13 +189,14 @@ class _ListTaskScreenState
     );
   }
 
-  Widget _listTask(BuildContext context, ThemeData theme, List<Task> tasks) {
+  Widget _listTask(
+      BuildContext context, ThemeData theme, List<TaskModel> tasks) {
     return ListView.builder(
         reverse: true,
         itemCount: tasks.length,
         itemBuilder: (context, index) {
           final item = tasks[index];
-          DateTime dateTime = DateTime.parse(item.created_at ?? '');
+
           return GestureDetector(
               onTap: () {
                 Navigator.push(
@@ -206,12 +204,14 @@ class _ListTaskScreenState
                   MaterialPageRoute(
                     builder: (context) => TaskDetail(task: item),
                   ),
-                );
+                ).then((value) {if(value == true){
+                  bloc.loadListTask();
+                }});
               },
               child: ItemTask(
                 title: item.content ?? '',
                 description: item.description ?? '',
-                dateTime: dateTime,
+                dateTime: ConvertUtility.convertStringToDateTime(item.toDate)?? DateTime.now(),
                 colorCard: theme.colorScheme.primary
                     .withOpacity(index % 2 != 0 ? 0.5 : 1),
                 isShowIconClock: index % 2 == 0 ? true : false,
