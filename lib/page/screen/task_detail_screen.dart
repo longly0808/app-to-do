@@ -4,6 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:to_do_list/bloc/bloc.dart';
 import 'package:to_do_list/constant.dart';
 import 'package:to_do_list/core/bloc/base_state.dart';
+import 'package:to_do_list/model/common.dart';
 import 'package:to_do_list/model/service/api/task.dart';
 import 'package:to_do_list/model/view/update_task_model.dart';
 import 'package:to_do_list/style/style.dart';
@@ -13,7 +14,8 @@ import 'package:to_do_list/widget/widget.dart';
 
 class TaskDetail extends BaseCubitStatefulWidget {
   const TaskDetail({Key? key, required this.task}) : super(key: key);
-  final Task task;
+  final TaskModel task;
+
 
   @override
   State<TaskDetail> createState() => _TaskDetailState();
@@ -21,6 +23,13 @@ class TaskDetail extends BaseCubitStatefulWidget {
 
 class _TaskDetailState
     extends BaseCubitStateFulWidgetState<UpdateTaskBloc, TaskDetail> {
+    TaskModel _taskModel = TaskModel();
+   @override
+  void initState() {
+    bloc.initData(widget.task);
+    super.initState();
+  }
+
   @override
   Widget buildBody(BuildContext context) {
     final theme = Theme.of(context);
@@ -31,6 +40,7 @@ class _TaskDetailState
         listener: (BuildContext context, state) {
           if (state is UpdateTaskSuccess) {
             ToastUtility.showSuccess(message: 'Update Success');
+            Navigator.pop(context, true);
           } else if (state is LoadedState && state.errorMessage != null) {
             ToastUtility.showError([state.errorMessage ?? '']);
           }
@@ -39,6 +49,7 @@ class _TaskDetailState
           if (state is LoadedState) {
             UpdateTaskModel model = state.model;
             return Scaffold(
+              resizeToAvoidBottomInset: false,
                 body: SafeArea(
               child: Container(
                 padding: const EdgeInsets.all(Dimens.size16),
@@ -57,10 +68,10 @@ class _TaskDetailState
                       focusBorderColor: theme.primaryColorDark,
                       cursorColor: theme.primaryColorDark,
                       hintText: model.isUpdate == true ? tr('title') : '',
-                      initText: widget.task.content ?? '',
+                      initText: _taskModel.content??(model.taskModel.content??''),
                       colorHint: theme.primaryColorDark.withOpacity(0.5),
                       onChanged: (value) {
-                        model.taskModel.content = value;
+                        _taskModel.content = value ??'';
                       },
                       isShowBorder: true,
                       textStyle: theme.textTheme.headline4!
@@ -88,11 +99,11 @@ class _TaskDetailState
                       cursorColor: theme.primaryColorDark,
                       hintText: model.isUpdate ? 'description' : '',
                       colorHint: theme.primaryColorDark.withOpacity(0.5),
+                      initText: _taskModel.description??(model.taskModel.description??''),
                       onChanged: (value) {
-                        model.taskModel.description = value;
+                        _taskModel.description = value??'';
                       },
                       isShowBorder: true,
-                      initText: widget.task.description ?? '',
                       textStyle: theme.textTheme.bodyText1!
                           .copyWith(color: theme.primaryColorDark),
                       keyboardType: TextInputType.multiline,
@@ -116,7 +127,8 @@ class _TaskDetailState
                         visible: model.isUpdate,
                         child: CustomButton(
                           onclick: () {
-                            bloc.updateState(model.taskModel);
+
+                            bloc.updateTaskState(_taskModel);
                           },
                           textColors: theme.primaryColorDark,
                           colorBorder: theme.primaryColorDark,

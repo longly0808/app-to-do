@@ -22,10 +22,16 @@ class ConvertUtility {
   // }
 
   static DateTime? convertStringToDateTime(String? json) {
-    if (json == null || json.isEmpty) {
-      return null;
+    try{
+      if (json == null || json.isEmpty) {
+        return null;
+      }
+      return DateTime.parse(json).toLocal();
     }
-    return DateTime.parse(json).toLocal();
+    catch(e){
+      return  DateTime.parse(json ?? '');
+    }
+
   }
 
 

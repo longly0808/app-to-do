@@ -6,7 +6,7 @@ class TaskModel {
   String? description;
   String? createAt;
   String? toDate;
-  bool? isFinish;
+  bool? isCompleted;
 
   TaskModel({
     this.id,
@@ -14,7 +14,7 @@ class TaskModel {
     this.description,
     this.createAt,
     this.toDate,
-    this.isFinish,
+    this.isCompleted,
   });
 
    DateTime get getDate => ConvertUtility.convertStringToDateTime(toDate)?? DateTime.now();

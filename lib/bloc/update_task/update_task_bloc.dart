@@ -12,39 +12,37 @@ class UpdateTaskBloc extends BaseCubit {
 
   UpdateTaskBloc(this._taskService) : super(InitialState());
 
-  @override
-  void initState() {
-    UpdateTaskModel updateTaskModel = UpdateTaskModel(taskModel: TaskModel());
-    emit(LoadedState(null, updateTaskModel));
-
-    super.initState();
+  Future<void> initData(TaskModel task) async {
+    UpdateTaskModel model = UpdateTaskModel(taskModel: task);
+    emit(LoadedState(null, model));
   }
 
-  Future<void> updateState(TaskModel task) async {
+  Future<void> updateTaskState(TaskModel task) async {
+    UpdateTaskModel model = latestLoadedState?.model;
     UpdateTaskRequest request = UpdateTaskRequest(
-        id: task.id ?? '',
+        id: model.taskModel.id ?? '',
         description: task.description,
-        contents: task.content,
+        content: task.content,
         due_datetime: task.toDate,
-        is_completed: task.isFinish);
-    final response = await _taskService.updateTask(
-        updateTaskRequest: request, uidGen: DateTime
-        .now()
-        .millisecondsSinceEpoch
-        .toString());
-    if (response.statusCode == 200){
-      emit(UpdateTaskSuccess());
-    }
-    else{
-      LoadedState(null,null,errorMessage: response.statusMessage);
-    }
+        is_completed: task.isCompleted);
+    showLoading();
 
+    final response = await _taskService.updateTask(
+      updateTaskRequest: request,
+      uidGen: DateTime.now().millisecondsSinceEpoch.toString(),
+    );
+    if (response.statusCode == 200) {
+      dismissLoading();
+      emit(UpdateTaskSuccess());
+    } else {
+      dismissLoading();
+      LoadedState(null, null, errorMessage: response.statusMessage);
+    }
   }
 
-  Future<void> showUpdate(bool status) async{
+  Future<void> showUpdate(bool status) async {
     UpdateTaskModel model = latestLoadedState?.model;
     model.isUpdate = status;
     emit(LoadedState(null, model));
   }
-
 }

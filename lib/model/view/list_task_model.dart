@@ -1,7 +1,7 @@
 import '../model.dart';
 
 class ListTaskModel{
-  List<Task>? tasks;
+  List<TaskModel>? tasks;
 
   ListTaskModel({this.tasks});
 }
