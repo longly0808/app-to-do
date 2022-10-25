@@ -12,3 +12,5 @@ export 'update_task/update_task_bloc.dart';
 export 'update_task/update_task_state.dart';
 export 'delete_task/delete_task_bloc.dart';
 export 'delete_task/delete_task_state.dart';
+export 'theme/theme_bloc.dart';
+export 'theme/theme_state.dart';

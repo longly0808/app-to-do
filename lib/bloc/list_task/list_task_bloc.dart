@@ -23,7 +23,7 @@ class ListTaskBloc extends BaseCubit {
     super.initState();
   }
 
-  Future<void> loadListTask() async {
+  Future<void> loadListTask({bool? updateLocation}) async {
     ListTaskModel listTaskModel = ListTaskModel(tasks: []);
     showLoading();
     Response response = await _listTaskService.loadListTask();
@@ -37,11 +37,16 @@ class ListTaskBloc extends BaseCubit {
             ..description = e.description
             ..toDate = e.due?.datetime
             ..createAt = e.created_at
-            ..isCompleted = e.is_completed)
+            ..isCompleted = e.is_completed
+            ..location = e.due?.timezone)
           .toList();
 
       dismissLoading();
+      if(updateLocation?? false){
+        listTaskModel.location = listTaskModel.tasks?.last.location;
+      }
       emit(LoadedState(null, listTaskModel));
+
       return;
     } else {
       dismissLoading();
@@ -51,4 +56,6 @@ class ListTaskBloc extends BaseCubit {
       );
     }
   }
+
+
 }

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:to_do_list/bloc/bloc.dart';
 import 'package:to_do_list/core/bloc/base_cubit.dart';
 import 'package:to_do_list/core/bloc/base_state.dart';
@@ -23,7 +25,12 @@ class CreateTaskBloc extends BaseCubit {
       uidGen: DateTime.now().microsecondsSinceEpoch.toString(),
     );
     if(response.statusCode == 200){
-      emit(CreateTaskSuccess());
+      Task task = Task.fromJson(response.data);
+     TaskModel taskModel = TaskModel()..id =task.id
+                                      ..content = task.content
+                                      ..description = task.description
+                                      ..location = task.due?.timezone;
+      emit(CreateTaskSuccess(taskModel: taskModel));
     }
     else{
       emit(LoadedState(null, null,errorMessage: response.statusMessage));
