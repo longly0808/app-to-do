@@ -51,7 +51,7 @@ Map<String, dynamic> _$TaskToJson(Task instance) => <String, dynamic>{
 Due _$DueFromJson(Map<String, dynamic> json) => Due(
       json['date'] as String?,
       json['string'] as String?,
-      json['lang'] as String?,
+      json['timezone'] as String?,
       json['is_recurring'] as bool?,
       json['datetime'] as String?,
     );
@@ -59,7 +59,7 @@ Due _$DueFromJson(Map<String, dynamic> json) => Due(
 Map<String, dynamic> _$DueToJson(Due instance) => <String, dynamic>{
       'date': instance.date,
       'string': instance.string,
-      'lang': instance.lang,
+      'timezone': instance.timezone,
       'is_recurring': instance.is_recurring,
       'datetime': instance.datetime,
     };

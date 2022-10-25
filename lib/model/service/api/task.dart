@@ -52,12 +52,12 @@ class Task {
 class Due {
   String? date;
   String? string;
-  String? lang;
+  String? timezone;
   bool? is_recurring;
   String? datetime;
 
 
-  Due(this.date, this.string, this.lang, this.is_recurring, this.datetime);
+  Due(this.date, this.string, this.timezone, this.is_recurring, this.datetime);
 
   factory Due.fromJson(Map<String, dynamic> json) => _$DueFromJson(json);
 

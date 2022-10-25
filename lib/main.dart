@@ -1,6 +1,10 @@
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
+import 'package:to_do_list/bloc/bloc.dart';
+import 'package:to_do_list/core/bloc/base_state.dart';
+import 'package:to_do_list/model/view/theme_model.dart';
 import 'package:to_do_list/page/screen/home_screen.dart';
 import 'package:to_do_list/style/my_theme.dart';
 
@@ -8,7 +12,7 @@ import 'dependencies.dart';
 import 'utility/utility.dart';
 
 void main() async {
-   WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
   await EasyLocalization.ensureInitialized();
   await AppDependencies.initialize();
   initApp();
@@ -23,8 +27,8 @@ void main() async {
     ),
   );
 }
-Future<void> initApp() async{
 
+Future<void> initApp() async {
   // EasyLoading.init();
 }
 
@@ -51,8 +55,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   bool? taske;
+  final bloc = AppDependencies.injector.get<ThemeBloc>();
   @override
   void initState() {
+    bloc.loadTheme();
     // TODO: implement initState
     super.initState();
     // getStatusLogin();
@@ -65,21 +71,34 @@ class _MyHomePageState extends State<MyHomePage> {
   //   print(taske);
   // }
 
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: MyTheme.lightTheme(),
-      // darkTheme: MyTheme.darkTheme(),
-      localizationsDelegates: context.localizationDelegates,
-      locale: context.locale,
-      supportedLocales: context.supportedLocales,
-      debugShowCheckedModeBanner: false,
-      builder: EasyLoading.init(),
-      home: const Scaffold(
-        body: SafeArea(
-          child:HomeScreen()
-          // , LoginPage(),
-        ),
+    return BlocProvider(
+      create: (context) => bloc,
+      child: BlocConsumer<ThemeBloc, BaseState>(
+        builder: (BuildContext context, state) {
+          if (state is LoadedState) {
+            ThemeModel model = state.model;
+            bool statusTheme = model.isLightMode;
+            return MaterialApp(
+              theme: statusTheme ? MyTheme.lightTheme() : MyTheme.darkTheme(),
+              // darkTheme: MyTheme.darkTheme(),
+              localizationsDelegates: context.localizationDelegates,
+              locale: context.locale,
+              supportedLocales: context.supportedLocales,
+              debugShowCheckedModeBanner: false,
+              builder: EasyLoading.init(),
+              home: const Scaffold(
+                body: SafeArea(child: HomeScreen()
+                    // , LoginPage(),
+                    ),
+              ),
+            );
+          }
+          return const SizedBox();
+        },
+        listener: (BuildContext context, Object? state) {},
       ),
     );
   }

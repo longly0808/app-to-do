@@ -4,11 +4,14 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:to_do_list/bloc/bloc.dart';
 import 'package:to_do_list/config/config.dart';
 import 'package:to_do_list/core/bloc/base_state.dart';
+import 'package:to_do_list/dependencies.dart';
 import 'package:to_do_list/model/view/list_task_model.dart';
 import 'package:to_do_list/page/screen/home_screen.dart';
+import 'package:to_do_list/service/service.dart';
 import 'package:to_do_list/utility/convert.dart';
 import 'package:to_do_list/widget/base_cubit_stateful_widget.dart';
 import '../../constant.dart';
+import '../../main.dart';
 import '../../model/model.dart';
 import '../../style/style.dart';
 import '../../widget/item_task.dart';
@@ -26,6 +29,8 @@ class ListTaskScreen extends BaseCubitStatefulWidget {
 
 class _ListTaskScreenState
     extends BaseCubitStateFulWidgetState<ListTaskBloc, ListTaskScreen> {
+  final blocTheme = AppDependencies.injector.get<ThemeBloc>();
+
   @override
   void initState() {
     Config.token = widget.token;
@@ -70,14 +75,12 @@ class _ListTaskScreenState
             context: context,
             builder: (context) {
               return CreateTaskScreen(
-                  title: 'work from home',
-                  description: 'do something',
-                  date: DateTime.now());
+                  title: '', description: '', date: DateTime.now());
             },
           ).then(
             (value) {
               if (value == true) {
-                bloc.loadListTask();
+                bloc.loadListTask(updateLocation: true);
               }
             },
           );
@@ -103,6 +106,17 @@ class _ListTaskScreenState
             ),
             Expanded(
               child: _listTask(context, theme, model.tasks ?? []),
+            ),
+            const SizedBox(
+              height: Dimens.size8,
+            ),
+            Visibility(
+              visible: model.location != null ? true : false,
+              child: Text(
+                'location of app is : ${model.location}',
+                style: theme.textTheme.headline5!
+                    .copyWith(color: theme.colorScheme.error),
+              ),
             ),
           ],
         ),
@@ -149,9 +163,20 @@ class _ListTaskScreenState
     );
   }
 
-  void selectedSettings(int selected) {
+  void selectedSettings(int selected) async {
     switch (selected) {
       case 0:
+        UserPreferences userPreferences =
+            AppDependencies.injector.get<UserPreferences>();
+        final sharePre = await userPreferences.getInstance();
+        bool status = await sharePre.getBool(Config.lightMode) ?? true;
+        blocTheme.changeTheme(!status);
+        await Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const MyHomePage(
+                      title: '',
+                    )));
         break;
       case 1:
         Navigator.push(context,
@@ -204,14 +229,17 @@ class _ListTaskScreenState
                   MaterialPageRoute(
                     builder: (context) => TaskDetail(task: item),
                   ),
-                ).then((value) {if(value == true){
-                  bloc.loadListTask();
-                }});
+                ).then((value) {
+                  if (value == true) {
+                    bloc.loadListTask();
+                  }
+                });
               },
               child: ItemTask(
                 title: item.content ?? '',
                 description: item.description ?? '',
-                dateTime: ConvertUtility.convertStringToDateTime(item.toDate)?? DateTime.now(),
+                dateTime: ConvertUtility.convertStringToDateTime(item.toDate) ??
+                    DateTime.now(),
                 colorCard: theme.colorScheme.primary
                     .withOpacity(index % 2 != 0 ? 0.5 : 1),
                 isShowIconClock: index % 2 == 0 ? true : false,
