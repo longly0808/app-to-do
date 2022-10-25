@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:to_do_list/dependencies.dart';
+import 'package:to_do_list/model/model.dart';
 import 'package:to_do_list/model/service/api/update_task/update_task.dart';
 import '../config/config.dart';
 import '../model/service/api/create_task/create_task.dart';
@@ -54,14 +55,15 @@ class TaskService {
       return Response(requestOptions: RequestOptions(path: ''));
     }
   }
-  Future<Response> deleteTask({required String idTask}) async {
+  Future<Response> deleteTask({required DeleteTaskReQuest request}) async {
     Dio dio = AppDependencies.injector.get<Dio>();
     try {
       dio.options.headers["Authorization"] = "Bearer ${Config.token}";
-      final response = dio.post("${Config.BASEURL}/$idTask");
+      final response = dio.delete("${Config.BASEURL}/${request.id}");
       return response;
     } catch (e) {
       return Response(requestOptions: RequestOptions(path:''));
     }
   }
+
 }

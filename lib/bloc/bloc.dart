@@ -10,3 +10,5 @@ export 'create_task/create_task_bloc.dart';
 export 'create_task/create_task_state.dart';
 export 'update_task/update_task_bloc.dart';
 export 'update_task/update_task_state.dart';
+export 'delete_task/delete_task_bloc.dart';
+export 'delete_task/delete_task_state.dart';
