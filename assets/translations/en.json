@@ -19,5 +19,7 @@
   "description": "Description",
   "add_to_do":"Add to do",
   "update": "update",
+  "update_success": "Update Success",
+  "nothing_to_update":"Nothing change to update",
   "end_json": "end_json thêm resource phía trên dòng này."
 }

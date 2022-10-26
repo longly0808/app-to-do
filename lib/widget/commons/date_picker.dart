@@ -24,17 +24,20 @@ class CustomDatePicker extends StatefulWidget {
   final bool isTitle;
   final Color colorField;
   final bool? isShowIcon;
-
+  final Color? colorIcon;
   final Color? backgroundColor;
   final double borderRadius;
   final bool enabled;
   final bool showIcon;
   final bool isShowBorder;
   final IconData? iconData;
+  final double? sizeIcon;
   final int? errorMaxLines;
   final String? hintText;
   final EdgeInsets? textPadding;
   final TextStyle? textStyle;
+  final Color? borderColor;
+  final Color? borderFocusColor;
 
   const CustomDatePicker({
     Key? key,
@@ -49,10 +52,12 @@ class CustomDatePicker extends StatefulWidget {
     this.textInputType,
     this.showIcon = true,
     this.isShowBorder = true,
+    this.sizeIcon,
     this.errorMaxLines,
     this.initialDate,
     this.locale = const Locale('en', 'EN'),
     this.isShowTime = false,
+    this.colorIcon ,
     this.validator,
     this.isRequired = false,
     this.isTitle = true,
@@ -61,6 +66,8 @@ class CustomDatePicker extends StatefulWidget {
     this.iconData,
     this.hintText,
     this.backgroundColor,
+    this.borderColor,
+    this.borderFocusColor,
     this.isShowIcon = true,
     this.borderRadius = Dimens.size12,
     this.textPadding = const EdgeInsets.symmetric(
@@ -140,8 +147,10 @@ class CustomDatePickerState extends State<CustomDatePicker> {
                   ? Colors.transparent
                   : widget.backgroundColor ?? Colors.transparent,
               border: _inputBorder(Colors.transparent),
-              enabledBorder: _inputBorder(theme.colorScheme.onSecondary),
-              focusedBorder: _inputBorder(theme.colorScheme.surface),
+              enabledBorder: _inputBorder(
+                  widget.borderColor ?? theme.colorScheme.onSecondary),
+              focusedBorder:
+                  _inputBorder(widget.borderFocusColor ?? theme.colorScheme.surface),
               suffixIconConstraints: const BoxConstraints(
                 minHeight: Dimens.size16,
                 maxHeight: Dimens.size32,
@@ -150,13 +159,14 @@ class CustomDatePickerState extends State<CustomDatePicker> {
               ),
               suffixIcon: widget.showIcon
                   ? Container(
-                      width: Dimens.size20,
-                      height: Dimens.size20,
+                      width:widget.sizeIcon?? Dimens.size20,
+                      height: widget.sizeIcon?? Dimens.size20,
                       margin: const EdgeInsets.only(right: Dimens.size10),
                       child: widget.isShowIcon == true
                           ? Icon(
                               widget.iconData ?? Icons.calendar_today_outlined,
-                              color: theme.colorScheme.onSecondary,
+                              color: widget.colorIcon ?? theme.colorScheme.onSecondary,
+                              size: widget.sizeIcon?? Dimens.size20,
                             )
                           : const SizedBox(),
                     )

@@ -29,6 +29,7 @@ class MyTheme{
         primaryContainer: MyColors.whiteColor,
         secondaryContainer: MyColors.activeColor,
         surface: MyColors.defaultColor,
+
       ) ,
       textTheme:const TextTheme(
         headline1: TextStyle(

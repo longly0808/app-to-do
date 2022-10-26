@@ -7,7 +7,6 @@ import 'package:to_do_list/constant.dart';
 import 'package:to_do_list/core/bloc/base_state.dart';
 import 'package:to_do_list/dependencies.dart';
 import 'package:to_do_list/model/common.dart';
-import 'package:to_do_list/model/service/api/task.dart';
 import 'package:to_do_list/model/view/update_task_model.dart';
 import 'package:to_do_list/page/screen/list_task_screen.dart';
 import 'package:to_do_list/style/style.dart';
@@ -36,15 +35,13 @@ class _TaskDetailState
   @override
   Widget buildBody(BuildContext context) {
     final theme = Theme.of(context);
-    final size = MediaQuery
-        .of(context)
-        .size;
+    final size = MediaQuery.of(context).size;
     return BlocProvider(
       create: (context) => bloc,
       child: BlocConsumer<UpdateTaskBloc, BaseState>(
         listener: (BuildContext context, state) {
           if (state is UpdateTaskSuccess) {
-            ToastUtility.showSuccess(message: 'Update Success');
+            ToastUtility.showSuccess(message: tr('update_success'));
             Navigator.pop(context, true);
           } else if (state is LoadedState && state.errorMessage != null) {
             ToastUtility.showError([state.errorMessage ?? '']);
@@ -136,7 +133,7 @@ class _TaskDetailState
                               onclick: () {
                                 bloc.updateTaskState(_taskModel);
                               },
-                              textColors: theme.primaryColorDark,
+                              textColors: theme.colorScheme.primary,
                               colorBorder: theme.primaryColorDark,
                               colors: theme.colorScheme.onSecondary,
                               borderRadius: Dimens.size16,
@@ -166,14 +163,28 @@ class _TaskDetailState
             Navigator.pop(context);
           },
         ),
-        const Spacer(),
-        GestureDetector(
-          child: Image.asset(
-            Constants.icon_clock,
-            height: Dimens.size25,
-            color: theme.primaryColorDark,
+        const SizedBox(
+          width: Dimens.size16,
+        ),
+        Expanded(
+          child: CustomDatePicker(
+            textStyle: theme.textTheme.bodyText2!
+                .copyWith(color: theme.primaryColorDark),
+            enabled: true,
+            title: '',
+            borderColor: Colors.transparent,
+            iconData: Icons.watch_later_outlined,
+            showIcon: true,
+            sizeIcon: Dimens.size32,
+            colorIcon: theme.primaryColorDark,
+            initialDate:
+                ConvertUtility.parseStringToDateTime(model.taskModel.toDate),
+            lastDate: DateTime(2200),
+            firstDate: DateTime.now(),
+            onChanged: (value) {
+              _taskModel.toDate = ConvertUtility.convertDatetimeToString(value);
+            },
           ),
-          onTap: () {},
         ),
         const SizedBox(
           width: Dimens.size16,
@@ -198,14 +209,14 @@ class _TaskDetailState
             color: theme.primaryColorDark,
           ),
           onTap: () {
-            openModalBottomSheet(theme,model.taskModel.id ?? '');
+            openModalBottomSheet(theme, model.taskModel.id ?? '');
           },
         ),
       ],
     );
   }
 
-  void openModalBottomSheet(ThemeData theme,String id) {
+  void openModalBottomSheet(ThemeData theme, String id) {
     final bloc = AppDependencies.injector.get<DeleteTaskBloc>();
     showModalBottomSheet(
         barrierColor: Colors.black.withOpacity(0.5),
@@ -215,15 +226,17 @@ class _TaskDetailState
         builder: (context) {
           return BlocProvider(
             create: (context) => bloc,
-            child: BlocConsumer<DeleteTaskBloc,BaseState>(
+            child: BlocConsumer<DeleteTaskBloc, BaseState>(
               listener: (context, state) {
                 if (state is LoadedState && state.errorMessage != null) {
                   ToastUtility.showError([state.errorMessage ?? '']);
-                }
-                else if (state is DeletetaskSuccess) {
-                  Navigator.pushAndRemoveUntil(context, MaterialPageRoute(
-                      builder: (context) => ListTaskScreen(token: Config.token)), (
-                      route) => false);
+                } else if (state is DeletetaskSuccess) {
+                  Navigator.pushAndRemoveUntil(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) =>
+                              ListTaskScreen(token: Config.token)),
+                      (route) => false);
                 }
               },
               builder: (context, state) {

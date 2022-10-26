@@ -1,3 +1,4 @@
+import 'package:easy_localization/easy_localization.dart';
 import 'package:to_do_list/core/bloc/base_state.dart';
 import 'package:to_do_list/model/service/api/update_task/update_task.dart';
 import 'package:to_do_list/model/view/update_task_model.dart';
@@ -5,6 +6,7 @@ import 'package:to_do_list/service/service.dart';
 
 import '../../core/bloc/base_cubit.dart';
 import '../../model/model.dart';
+import '../../utility/toast_utils.dart';
 import '../bloc.dart';
 
 class UpdateTaskBloc extends BaseCubit {
@@ -17,16 +19,20 @@ class UpdateTaskBloc extends BaseCubit {
     emit(LoadedState(null, model));
   }
 
-  Future<void> updateTaskState(TaskModel task) async {
+  Future<void> updateTaskState(TaskModel? task) async {
     UpdateTaskModel model = latestLoadedState?.model;
     UpdateTaskRequest request = UpdateTaskRequest(
         id: model.taskModel.id ?? '',
-        description: task.description,
-        content: task.content,
-        due_datetime: task.toDate,
-        is_completed: task.isCompleted);
+        description: task?.description,
+        content: task?.content,
+        due_datetime: task?.toDate,
+        is_completed: task?.isCompleted);
     showLoading();
-
+      if(task?.content==null && task?.description == null && task?.toDate == null ){
+        dismissLoading();
+        ToastUtility.showError([tr('nothing_to_update')]);
+        return;
+      }
     final response = await _taskService.updateTask(
       updateTaskRequest: request,
       uidGen: DateTime.now().millisecondsSinceEpoch.toString(),
@@ -36,7 +42,7 @@ class UpdateTaskBloc extends BaseCubit {
       emit(UpdateTaskSuccess());
     } else {
       dismissLoading();
-      LoadedState(null, null, errorMessage: response.statusMessage);
+      LoadedState(null, model, errorMessage: response.statusMessage);
     }
   }
 

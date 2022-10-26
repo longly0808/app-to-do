@@ -238,7 +238,7 @@ class _ListTaskScreenState
               child: ItemTask(
                 title: item.content ?? '',
                 description: item.description ?? '',
-                dateTime: ConvertUtility.convertStringToDateTime(item.toDate) ??
+                dateTime: ConvertUtility.convertStringToDateTime(item.createAt) ??
                     DateTime.now(),
                 colorCard: theme.colorScheme.primary
                     .withOpacity(index % 2 != 0 ? 0.5 : 1),
