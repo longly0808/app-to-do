@@ -222,7 +222,7 @@ class _BorderTextFieldInputState extends State<BorderTextFieldInput> {
 
             isDense: true,
             errorText: widget.errorText,
-            errorStyle: widget.errorStyle ?? theme.primaryTextTheme.headline4,
+            errorStyle: widget.errorStyle ?? theme.primaryTextTheme.bodyText2!.copyWith(color: theme.colorScheme.error),
             errorMaxLines: widget.errorMaxLines,
             filled: true,
             fillColor: !widget.enabled

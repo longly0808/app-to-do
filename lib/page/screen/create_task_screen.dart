@@ -76,6 +76,13 @@ class _TaskDetailState extends State<CreateTaskScreen> {
                       hintText: tr('title'),
                       initText: taskModel.content??'',
                       isShowBorder: true,
+                      validator: (value){
+                        if(value ==null || value.isEmpty){
+                          return tr('validator');
+                        }
+                        return null;
+                      },
+                      autovalidateMode: AutovalidateMode.onUserInteraction,
                       onChanged: (value) {
                         taskModel.content = value ?? '';
                       },
@@ -87,6 +94,7 @@ class _TaskDetailState extends State<CreateTaskScreen> {
                       initText: taskModel.description??'',
                       isShowBorder: true,
                       keyboardType: TextInputType.multiline,
+                      textInputAction: TextInputAction.newline,
                       maxLines: Dimens.num10,
                       onChanged: (value) {
                         taskModel.description = value ?? '';
@@ -121,7 +129,10 @@ class _TaskDetailState extends State<CreateTaskScreen> {
                   ),
                   CustomButton(
                     onclick: () {
-                      bloc.createTask(taskModel);
+                      if(_formKey.currentState!.validate()){
+                        bloc.createTask(taskModel);
+                      }
+
                     },
                     text: tr('add_to_do'),
                     colors: theme.colorScheme.onSecondary,

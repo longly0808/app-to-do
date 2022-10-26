@@ -10,11 +10,14 @@ class DeleteTaskBloc extends BaseCubit{
 
   Future<void> deleteTask({required String idTask})async{
     DeleteTaskReQuest request = DeleteTaskReQuest(id: idTask);
+    showLoading();
     final response =await _taskService.deleteTask(request: request);
     if(response.statusCode == 204){
+      dismissLoading();
       emit(DeletetaskSuccess());
     }
     else{
+      dismissLoading();
       emit(LoadedState(null, null,errorMessage: response.statusMessage));
     }
   }

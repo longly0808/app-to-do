@@ -21,5 +21,6 @@
   "update": "update",
   "update_success": "Update Success",
   "nothing_to_update":"Nothing change to update",
+  "validator":"Please enter some text",
   "end_json": "end_json thêm resource phía trên dòng này."
 }

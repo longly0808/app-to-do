@@ -24,6 +24,7 @@ class TaskDetail extends BaseCubitStatefulWidget {
 
 class _TaskDetailState
     extends BaseCubitStateFulWidgetState<UpdateTaskBloc, TaskDetail> {
+  final GlobalKey<FormState> _formKey = GlobalKey();
   TaskModel _taskModel = TaskModel();
 
   @override
@@ -57,90 +58,101 @@ class _TaskDetailState
                     padding: const EdgeInsets.all(Dimens.size16),
                     width: size.width,
                     height: size.height,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        _rowIconHeader(theme, model),
-                        const SizedBox(
-                          height: Dimens.size16,
-                        ),
-                        BorderTextFieldInput(
-                          enabled: model.isUpdate,
-                          colorEnableBorder: theme.primaryColorDark,
-                          focusBorderColor: theme.primaryColorDark,
-                          cursorColor: theme.primaryColorDark,
-                          hintText: model.isUpdate == true ? tr('title') : '',
-                          initText: _taskModel.content ??
-                              (model.taskModel.content ?? ''),
-                          colorHint: theme.primaryColorDark.withOpacity(0.5),
-                          onChanged: (value) {
-                            _taskModel.content = value ?? '';
-                          },
-                          isShowBorder: true,
-                          textStyle: theme.textTheme.headline4!
-                              .copyWith(color: theme.primaryColorDark),
-                          keyboardType: TextInputType.multiline,
-                          textInputAction: TextInputAction.newline,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                        ),
-                        Visibility(
-                          visible: model.isUpdate,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: Dimens.size4),
-                            child: Divider(
-                              color: theme.primaryColorDark,
-                              endIndent: Dimens.size16,
-                              indent: Dimens.size16,
-                            ),
+                    child: Form(
+                      key: _formKey,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          _rowIconHeader(theme, model),
+                          const SizedBox(
+                            height: Dimens.size16,
                           ),
-                        ),
-                        BorderTextFieldInput(
-                          enabled: model.isUpdate,
-                          colorEnableBorder: theme.primaryColorDark,
-                          focusBorderColor: theme.primaryColorDark,
-                          cursorColor: theme.primaryColorDark,
-                          hintText: model.isUpdate ? 'description' : '',
-                          colorHint: theme.primaryColorDark.withOpacity(0.5),
-                          initText: _taskModel.description ??
-                              (model.taskModel.description ?? ''),
-                          onChanged: (value) {
-                            _taskModel.description = value ?? '';
-                          },
-                          isShowBorder: true,
-                          textStyle: theme.textTheme.bodyText1!
-                              .copyWith(color: theme.primaryColorDark),
-                          keyboardType: TextInputType.multiline,
-                          maxLines: 20,
-                          textInputAction: TextInputAction.newline,
-                          autovalidateMode: AutovalidateMode.onUserInteraction,
-                        ),
-                        Visibility(
-                          visible: model.isUpdate,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(
-                                vertical: Dimens.size4),
-                            child: Divider(
-                              color: theme.primaryColorDark,
-                              endIndent: Dimens.size16,
-                              indent: Dimens.size16,
-                            ),
+                          BorderTextFieldInput(
+                            enabled: model.isUpdate,
+                            colorEnableBorder: theme.primaryColorDark,
+                            focusBorderColor: theme.primaryColorDark,
+                            cursorColor: theme.primaryColorDark,
+                            hintText: model.isUpdate == true ? tr('title') : '',
+                            initText: _taskModel.content ??
+                                (model.taskModel.content ?? ''),
+                            colorHint: theme.primaryColorDark.withOpacity(0.5),
+                            onChanged: (value) {
+                              _taskModel.content = value ?? '';
+                            },
+                            validator: (value){
+                              if(value == null|| value.isEmpty){
+                                return tr('validator');
+                              }
+                              return null;
+                            },
+                            isShowBorder: true,
+                            textStyle: theme.textTheme.headline4!
+                                .copyWith(color: theme.primaryColorDark),
+                            keyboardType: TextInputType.multiline,
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
                           ),
-                        ),
-                        Visibility(
+                          Visibility(
                             visible: model.isUpdate,
-                            child: CustomButton(
-                              onclick: () {
-                                bloc.updateTaskState(_taskModel);
-                              },
-                              textColors: theme.colorScheme.primary,
-                              colorBorder: theme.primaryColorDark,
-                              colors: theme.colorScheme.onSecondary,
-                              borderRadius: Dimens.size16,
-                              text: tr('update'),
-                            )),
-                      ],
-                    ),
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: Dimens.size4),
+                              child: Divider(
+                                color: theme.primaryColorDark,
+                                endIndent: Dimens.size16,
+                                indent: Dimens.size16,
+                              ),
+                            ),
+                          ),
+                          BorderTextFieldInput(
+                            enabled: model.isUpdate,
+                            colorEnableBorder: theme.primaryColorDark,
+                            focusBorderColor: theme.primaryColorDark,
+                            cursorColor: theme.primaryColorDark,
+                            hintText: model.isUpdate ? 'description' : '',
+                            colorHint: theme.primaryColorDark.withOpacity(0.5),
+                            initText: _taskModel.description ??
+                                (model.taskModel.description ?? ''),
+                            onChanged: (value) {
+                              _taskModel.description = value ?? '';
+                            },
+                            isShowBorder: true,
+                            textInputAction: TextInputAction.newline,
+                            textStyle: theme.textTheme.bodyText1!
+                                .copyWith(color: theme.primaryColorDark),
+                            keyboardType: TextInputType.multiline,
+                            maxLines: 20,
+                            autovalidateMode: AutovalidateMode.onUserInteraction,
+                          ),
+                          Visibility(
+                            visible: model.isUpdate,
+                            child: Padding(
+                              padding: const EdgeInsets.symmetric(
+                                  vertical: Dimens.size4),
+                              child: Divider(
+                                color: theme.primaryColorDark,
+                                endIndent: Dimens.size16,
+                                indent: Dimens.size16,
+                              ),
+                            ),
+                          ),
+                          Visibility(
+                              visible: model.isUpdate,
+                              child: CustomButton(
+                                onclick: () {
+                                  if(_formKey.currentState!.validate()){
+                                    bloc.updateTaskState(_taskModel);
+                                  }
+
+                                },
+                                textColors: theme.colorScheme.primary,
+                                colorBorder: theme.primaryColorDark,
+                                colors: theme.colorScheme.onSecondary,
+                                borderRadius: Dimens.size16,
+                                text: tr('update'),
+                              )),
+                        ],
+                      ),
+                    )
                   ),
                 ));
           }
