@@ -96,7 +96,7 @@ class _ListTaskScreenState
         padding: const EdgeInsets.all(Dimens.size16),
         child: Column(
           children: [
-            _rowLogoAndSetting(theme),
+            _rowLogoAndSetting(theme, model),
             const SizedBox(
               height: Dimens.size32,
             ),
@@ -124,7 +124,7 @@ class _ListTaskScreenState
     );
   }
 
-  Widget _rowLogoAndSetting(ThemeData theme) {
+  Widget _rowLogoAndSetting(ThemeData theme, ListTaskModel model) {
     return Row(
       children: [
         Image.asset(
@@ -141,7 +141,9 @@ class _ListTaskScreenState
               PopupMenuItem(
                 value: 0,
                 child: Text(
-                  tr('theme'),
+                  'theme'.tr(namedArgs: {
+                    'type': ((model.isLightMode ?? true) ? 'light' : 'dark')
+                  }),
                 ),
               ),
               PopupMenuItem(
@@ -166,17 +168,15 @@ class _ListTaskScreenState
   void selectedSettings(int selected) async {
     switch (selected) {
       case 0:
-        UserPreferences userPreferences =
-            AppDependencies.injector.get<UserPreferences>();
-        final sharePre = await userPreferences.getInstance();
-        bool status = await sharePre.getBool(Config.lightMode) ?? true;
-        blocTheme.changeTheme(!status);
-        await Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => const MyHomePage(
-                      title: '',
-                    )));
+        bool status = await bloc.getTheme();
+        BlocProvider.value(
+          value: BlocProvider.of<ThemeBloc>(context),
+          child: const MyHomePage(
+            title: '',
+          ),
+        );
+        context.read<ThemeBloc>().changeTheme(!status);
+
         break;
       case 1:
         Navigator.push(context,
@@ -238,8 +238,9 @@ class _ListTaskScreenState
               child: ItemTask(
                 title: item.content ?? '',
                 description: item.description ?? '',
-                dateTime: ConvertUtility.convertStringToDateTime(item.createAt) ??
-                    DateTime.now(),
+                dateTime:
+                    ConvertUtility.convertStringToDateTime(item.createAt) ??
+                        DateTime.now(),
                 colorCard: theme.colorScheme.primary
                     .withOpacity(index % 2 != 0 ? 0.5 : 1),
                 isShowIconClock: index % 2 == 0 ? true : false,

@@ -24,9 +24,9 @@ class ThemeBloc extends BaseCubit{
   }
   Future<void> changeTheme(bool status)async{
     ThemeModel model = ThemeModel();
-    model.isLightMode = status;
+    model.isLightMode =status;
     var sharePreference = await _userPreferences.getInstance();
-    model.isLightMode =    await sharePreference.setBool(Config.lightMode, status);;
+     await sharePreference.setBool(Config.lightMode, status);
     emit(LoadedState(null, model));
   }
 }
