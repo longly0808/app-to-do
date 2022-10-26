@@ -76,14 +76,32 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (context) => bloc,
-      child: BlocConsumer<ThemeBloc, BaseState>(
+      child: BlocBuilder<ThemeBloc, BaseState>(
+        buildWhen: (previous, current) {
+          if(previous is InitialState){
+            return true;
+          }
+          if(previous is LoadedState && current is LoadedState){
+            final modelP = previous.model as ThemeModel;
+            final modelC = current.model as ThemeModel;
+            if(modelP.isLightMode != modelC.isLightMode){
+              return true;
+            }
+            else{
+              return false;
+            }
+          }
+          else{
+            return false;
+          }
+        } ,
         builder: (BuildContext context, state) {
           if (state is LoadedState) {
             ThemeModel model = state.model;
             bool statusTheme = model.isLightMode;
             return MaterialApp(
               theme: statusTheme ? MyTheme.lightTheme() : MyTheme.darkTheme(),
-              // darkTheme: MyTheme.darkTheme(),
+              darkTheme:statusTheme? MyTheme.darkTheme() : MyTheme.lightTheme(),
               localizationsDelegates: context.localizationDelegates,
               locale: context.locale,
               supportedLocales: context.supportedLocales,
@@ -98,7 +116,6 @@ class _MyHomePageState extends State<MyHomePage> {
           }
           return const SizedBox();
         },
-        listener: (BuildContext context, Object? state) {},
       ),
     );
   }

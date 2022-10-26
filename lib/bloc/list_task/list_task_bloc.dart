@@ -8,9 +8,12 @@ import 'package:to_do_list/model/service/api/task.dart';
 import 'package:to_do_list/model/view/list_task_model.dart';
 import 'package:to_do_list/service/service.dart';
 
+import '../../config/config.dart';
+
 class ListTaskBloc extends BaseCubit {
   UserPreferences _userPreferences;
   TaskService _listTaskService;
+  late final sharePre;
 
   ListTaskBloc(this._userPreferences, this._listTaskService)
       : super(InitialState());
@@ -25,6 +28,8 @@ class ListTaskBloc extends BaseCubit {
 
   Future<void> loadListTask({bool? updateLocation}) async {
     ListTaskModel listTaskModel = ListTaskModel(tasks: []);
+    sharePre= await _userPreferences.getInstance();
+    listTaskModel.isLightMode = await sharePre.getBool(Config.lightMode) ?? true;
     showLoading();
     Response response = await _listTaskService.loadListTask();
     if (response.statusCode == 200) {
@@ -55,6 +60,14 @@ class ListTaskBloc extends BaseCubit {
             errorMessage: response.statusMessage),
       );
     }
+  }
+  Future<bool> getTheme() async{
+    ListTaskModel listTaskModel = latestLoadedState?.model;
+    bool status = await  sharePre.getBool(Config.lightMode) ?? true;
+    listTaskModel.isLightMode = status;
+    emit(LoadedState(null, listTaskModel));
+    return listTaskModel.isLightMode?? true;
+
   }
 
 
