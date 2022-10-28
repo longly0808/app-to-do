@@ -217,10 +217,9 @@ class _ListTaskScreenState
   Widget _listTask(
       BuildContext context, ThemeData theme, List<TaskModel> tasks) {
     return ListView.builder(
-        reverse: true,
         itemCount: tasks.length,
         itemBuilder: (context, index) {
-          final item = tasks[index];
+          final item = tasks[tasks.length - 1 -index];
 
           return GestureDetector(
               onTap: () {

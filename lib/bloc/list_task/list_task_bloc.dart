@@ -13,7 +13,7 @@ import '../../config/config.dart';
 class ListTaskBloc extends BaseCubit {
   UserPreferences _userPreferences;
   TaskService _listTaskService;
-  late final sharePre;
+
 
   ListTaskBloc(this._userPreferences, this._listTaskService)
       : super(InitialState());
@@ -28,7 +28,7 @@ class ListTaskBloc extends BaseCubit {
 
   Future<void> loadListTask({bool? updateLocation}) async {
     ListTaskModel listTaskModel = ListTaskModel(tasks: []);
-    sharePre= await _userPreferences.getInstance();
+    final sharePre= await _userPreferences.getInstance();
     listTaskModel.isLightMode = await sharePre.getBool(Config.lightMode) ?? true;
     showLoading();
     Response response = await _listTaskService.loadListTask();
@@ -63,6 +63,7 @@ class ListTaskBloc extends BaseCubit {
   }
   Future<bool> getTheme() async{
     ListTaskModel listTaskModel = latestLoadedState?.model;
+    final sharePre= await _userPreferences.getInstance();
     bool status = await  sharePre.getBool(Config.lightMode) ?? true;
     listTaskModel.isLightMode = status;
     emit(LoadedState(null, listTaskModel));
